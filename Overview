@@ -1,0 +1,477 @@
+# Overview
+
+This homelab is designed to emulate a small-to-medium enterprise environment focused on systems administration, identity management, automation, security operations, and infrastructure engineering.
+The environment is intended to provide hands-on experience with technologies commonly used in enterprise IT including:
+
+- Linux administration  
+- Windows administration
+- Enterprise PKI
+- DNS
+- Configuration management with Ansible
+- SIEM and centralized logging
+- Endpoint monitoring
+- Identity management
+- VMware and KVM virtualization
+- Network segmentation
+- Security hardening
+
+The overall design follows the philosophy of Infrastructure as Code (IaC), where servers are configured using Ansible rather than manual administration.
+
+---
+
+# Current Objectives
+Current long-term goals include:
+
+- Fully automated infrastructure deployment
+- Automated certificate management
+- Automated OS patching
+- Centralized logging
+- Enterprise DNS
+- Enterprise PKI
+- Identity management using Samba4 Active Directory
+- Password rotation using LAPS and Ansbile
+- Fleet management
+- Vulnerability management
+- ProxMox and VMware administration
+- Learning enterprise architecture patterns
+    
+
+---
+
+# Network Infrastructure
+
+## Core Network
+Primary gateway:
+- Firewall  
+
+Core switch:
+- Switch 24 PoE
+    
+
+The network is segmented into multiple VLANs separating infrastructure, servers, and client devices.
+
+Current design includes:
+
+- Infrastructure
+- Server
+- Client
+- IoT
+- Guest
+- Additional isolated networks for lab experimentation
+    
+
+DHCP services are currently provided by the firewall
+
+---
+
+# Virtualization Platforms
+
+The lab intentionally uses multiple hypervisors to gain experience administering different enterprise virtualization technologies.
+
+## Proxmox
+
+Primary virtualization server:
+
+Hardware:
+- 3 x Mini PC's
+    
+
+Completed work:
+
+- Cluster creation    
+- Node joins
+- VM imports
+- NFS shared storage
+- Multi-VLAN networking
+    
+
+This environment allows comparison between:
+
+- VMware
+- Proxmox
+      
+
+---
+
+## VMware Environment
+
+Hardware:
+- 1 x mini PC
+
+Purpose:
+
+- VMware administration practice
+- VM migration
+- Shared storage
+- Enterprise networking
+- Future vCenter experimentation
+    
+
+Previous work included:
+
+- Shared NFS datastore
+- VM migration testing
+- Network configuration
+- Troubleshooting datastore connectivity
+    
+
+---
+
+
+---
+
+# Storage
+
+Central storage is provided by:
+
+NAS
+
+Current uses include:
+
+- Shared storage
+- Log storage
+- NFS datastore
+- Backup location
+    
+
+Additional work has included:
+
+- Apache configuration
+- TLS configuration
+- Security hardening
+- Vulnerability remediation
+    
+
+---
+
+# DNS Infrastructure
+
+Authoritative DNS is provided using BIND9.
+
+Current design:
+
+Primary DNS Server
+
+Responsibilities:
+
+- Internal zones
+- Forward zones
+- Reverse lookup zones
+- Internal name resolution
+    
+
+Secondary DNS
+
+Planned for redundancy.
+
+Current deployment includes:
+
+- named.conf.local templates
+- Forward lookup zones
+- Reverse lookup zones
+- Inventory-driven DNS records
+
+---
+
+# Public Key Infrastructure (PKI)
+
+The lab uses a two-tier certificate authority.
+
+## Offline Root CA
+
+Purpose:
+
+- Root trust anchor
+- Offline storage
+- Rarely powered on
+- Used only for signing subordinate CA certificates
+    
+
+---
+
+## Online Intermediate CA
+
+Purpose:
+
+- Certificate issuance
+- Server certificates
+- Client certificates
+- Internal TLS
+    
+
+Current work includes distributing trusted certificates to:
+
+- Ubuntu
+- Rocky Linux
+- Kali Linux
+- Arch Linux
+- Windows 11
+- macOS
+    
+
+Ansible automatically installs:
+
+- Root CA
+- Intermediate CA
+    
+
+onto managed systems.
+
+---
+
+# Identity Management
+
+Next major project:
+
+Samba4 Active Directory
+
+Goals:
+
+- Central authentication
+- LDAP
+- Kerberos
+- Sudo management
+- Host enrollment
+- Certificate integration
+    
+
+Planned integration:
+
+- Linux systems
+- Ansible
+- SSH
+- Samba4 AD
+- PKI
+    
+
+---
+
+# Configuration Management
+
+Configuration management is handled through Ansible.
+
+Directory structure includes:
+
+```
+ansible/
+├── inventory/
+├── group_vars/
+├── host_vars/
+├── playbooks/
+├── roles/
+└── templates/
+```
+
+Infrastructure is deployed using reusable roles.
+
+Current roles include:
+
+- Common configuration
+- Linux updates
+- PKI trust
+- Join Domain for Linux
+    
+
+Future planned roles include:
+
+- ElasticAgent install
+- Security hardening
+- Backup configuration
+- Monitoring
+- VMware integration
+    
+
+---
+
+# Operating Systems
+
+Current managed systems include:
+
+Linux
+
+- Ubuntu
+- Rocky Linux
+- Kali Linux
+- Arch Linux
+    
+
+Windows
+
+- Windows 11
+- Windows Server 2025
+
+Apple
+	 
+- macOS
+- iOS
+
+Future additions may include:
+
+- Additional Linux and Windows servers   
+- Container hosts and Containers
+    
+
+---
+
+# Logging and Monitoring
+
+## Elastic Stack
+
+Elastic is used as a second logging and monitoring platform.
+
+Components include:
+
+- Elasticsearch
+- Kibana
+- Fleet
+- Elastic Agent
+    
+
+Purpose:
+
+- Endpoint monitoring
+- Security analytics
+- Infrastructure monitoring
+    
+
+Past work has included:
+
+- Fleet Server deployment
+- Certificate troubleshooting
+- Agent enrollment
+- TLS configuration
+    
+
+---
+
+# Security
+
+Security remains a primary design objective.
+
+Current security projects include:
+
+- Internal PKI
+- TLS everywhere possible
+- Central logging
+- Certificate management
+- Password rotation
+- Infrastructure automation
+- Vulnerability scanning
+- Network segmentation
+    
+
+Security tools used include:
+   
+- Elastic
+- OpenVAS
+- Sophos EDR
+- firewall features:
+    - content filtering
+    - geo blocking
+    
+
+---
+
+# Automation
+
+Current automation includes:
+
+- Linux updates
+- Package installation
+- Certificate deployment
+    
+
+Future automation goals:
+   
+- Automatic certificate enrollment
+- New server provisioning
+- User management
+- Compliance validation
+    
+
+---
+
+# Future Roadmap
+
+## Phase 1
+
+- Complete BIND9 automation - moved to AD DNS - complete
+- Deploy PKI - completed
+- Deploy certificate trust - completed
+- Stabilize Elastic - completed
+    
+
+---
+
+## Phase 2 (Current)
+
+- Deploy Samba4 Active Directory - completed
+- Integrate Ansible authentication - in progress
+- Centralize Linux accounts - in progress
+- SSH key management
+    
+
+---
+
+## Phase 3
+
+- Automated certificate issuance
+- Internal HTTPS everywhere - in progress
+- Service certificates
+- User certificates
+    
+
+---
+
+## Phase 4
+
+- Automated server builds
+- Golden images
+- Full Infrastructure as Code
+    
+
+---
+
+## Phase 5
+
+- Monitoring dashboards
+- Compliance reporting
+- Security dashboards
+- Automated alerting
+    
+
+---
+
+# Skills Demonstrated
+
+This homelab provides practical experience in:
+
+- Enterprise networking
+- Linux administration
+- Windows administration
+- VMware administration
+- KVM virtualization
+- Proxmox virtualization
+- Infrastructure as Code
+- DNS administration
+- PKI management
+- TLS deployment
+- Identity management
+- Configuration management
+- Endpoint management
+- SIEM administration
+- Security monitoring
+- Automation engineering
+- Troubleshooting
+- Enterprise architecture
+    
+
+---
+
+# Long-Term Vision
+
+The ultimate goal of this homelab is to replicate many of the core technologies found in a modern enterprise while emphasizing automation, 
+repeatability, and security. Every service should be deployable through code, integrated with centralized identity and PKI, 
+monitored through centralized logging, and secured using industry best practices.
+
+As additional services are added—such as FreeIPA, automated certificate issuance, vulnerability scanning, backups, and monitoring—the environment will evolve into a fully automated enterprise lab capable of supporting realistic testing, skills development, and portfolio demonstrations for senior systems administration, infrastructure engineering, and cybersecurity roles.
